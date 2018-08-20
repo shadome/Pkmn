@@ -5,7 +5,7 @@ import { connect } from 'react-redux'
 import { Image, NativeModules, StatusBar, View, ScrollView, Text, FlatList } from 'react-native'
 import Orientation from 'react-native-orientation'
 
-
+import HealthBar from '../components/HealthBar'
 import * as BattlefieldActions from '../actions/BattlefieldActions'
 // import {COLOR, ThemeProvider, ListItem, Checkbox, Button, Toolbar, Icon, ActionButton, BottomNavigation, withTheme} from '../components/react-native-material-ui';
 // import * as DailyMealActions from '../actions/DailyMealActions';
