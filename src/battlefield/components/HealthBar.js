@@ -1,13 +1,14 @@
 'use strict'
 
-import React from 'react'
+import React, { Component } from 'react'
 import { StyleSheet, Text, View, Animated, Easing, } from 'react-native'
 
 var styles = StyleSheet.create({
   background: {
-    backgroundColor: '#bbbbbb',
+    backgroundColor: '#555555',
     height: 5,
-    overflow: 'hidden'
+    overflow: 'hidden',
+    width: 200,
   },
   fill: {
     backgroundColor: '#3b5998',
@@ -15,27 +16,27 @@ var styles = StyleSheet.create({
   }
 })
 
-
 class ProgressBar extends Component {
   constructor(props) {
     super(props);
+    this.state = { progress: new Animated.Value(this.props.value || 50) }
   }
-  update() {
-    Animated.timing(this.state.progress, {
-      easing: this.props.easing,
-      duration: this.props.easingDuration,
-      toValue: this.props.progress
-    }).start();
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.value >= 0 && this.props.value !== nextProps.value) {
+      Animated.timing(this.state.progress, {
+        easing: Easing.inOut(Easing.ease),//this.props.easing,
+        duration: 1000,//this.props.easingDuration,
+        toValue: nextProps.value
+      }).start();
+    }
   }
   render() {
-    let easing = Easing.inOut(Easing.ease)
-    let easingDuration = 500
     let fillWidth = this.state.progress.interpolate({
-      inputRange: [0, 1],
-      outputRange: [0, this.props.style.width || 500],
+      inputRange: [0, 100],
+      outputRange: [0, (this.props.style && this.props.style.width) || styles.background.width],
     })
     return (
-      <View style={[styles.background, this.props.backgroundStyle, this.props.style]}>
+      <View style={[styles.background, this.props.backgroundStyle]}>
         <Animated.View style={[styles.fill, this.props.fillStyle, { width: fillWidth }]}/>
       </View>
     )
@@ -44,49 +45,49 @@ class ProgressBar extends Component {
 
 export default ProgressBar
 
-var HealthBar = React.createClass({
+// var HealthBar = React.createClass({
 
-getDefaultProps() {
-return {
-  style: styles,
-  easing: Easing.inOut(Easing.ease),
-  easingDuration: 500
-};
-},
+// getDefaultProps() {
+// return {
+//   style: styles,
+//   easing: Easing.inOut(Easing.ease),
+//   easingDuration: 500
+// };
+// },
 
-getInitialState() {
-  return {
-    progress: new Animated.Value(this.props.initialProgress || 0)
-  };
-},
+// getInitialState() {
+//   return {
+//     progress: new Animated.Value(this.props.initialProgress || 0)
+//   };
+// },
 
-componentDidUpdate(prevProps, prevState) {
-  if (this.props.progress >= 0 && this.props.progress != prevProps.progress) {
-    this.update();
-  }
-},
+// componentDidUpdate(prevProps, prevState) {
+//   if (this.props.progress >= 0 && this.props.progress != prevProps.progress) {
+//     this.update();
+//   }
+// },
 
-render() {
+// render() {
 
-  var fillWidth = this.state.progress.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0 * this.props.style.width, 1 * this.props.style.width],
-  });
+//   var fillWidth = this.state.progress.interpolate({
+//     inputRange: [0, 1],
+//     outputRange: [0 * this.props.style.width, 1 * this.props.style.width],
+//   });
 
-  return (
-    <View style={[styles.background, this.props.backgroundStyle, this.props.style]}>
-      <Animated.View style={[styles.fill, this.props.fillStyle, { width: fillWidth }]}/>
-    </View>
-  );
-},
+//   return (
+//     <View style={[styles.background, this.props.backgroundStyle, this.props.style]}>
+//       <Animated.View style={[styles.fill, this.props.fillStyle, { width: fillWidth }]}/>
+//     </View>
+//   );
+// },
 
-update() {
-  Animated.timing(this.state.progress, {
-    easing: this.props.easing,
-    duration: this.props.easingDuration,
-    toValue: this.props.progress
-  }).start();
-}
-});
+// update() {
+//   Animated.timing(this.state.progress, {
+//     easing: this.props.easing,
+//     duration: this.props.easingDuration,
+//     toValue: this.props.progress
+//   }).start();
+// }
+// });
 
-module.exports = HealthBar;
+// module.exports = HealthBar;

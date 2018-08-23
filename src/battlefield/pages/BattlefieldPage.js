@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Image, NativeModules, StatusBar, View, ScrollView, Text, FlatList } from 'react-native'
+import { Image, NativeModules, StatusBar, View, ScrollView, Text, FlatList, Button } from 'react-native'
 import Orientation from 'react-native-orientation'
 
 import HealthBar from '../components/HealthBar'
@@ -17,6 +17,7 @@ class BattlefieldPage extends Component {
   constructor(props) {
     super(props);
     // this.currentKey = DailyMealBusiness.getIdFromDate(new Date());
+    this.state = { val: 50}
   }
   componentDidMount() {
     Orientation.lockToLandscape()
@@ -26,9 +27,12 @@ class BattlefieldPage extends Component {
   }
   render() {
     const { battlefieldData, navigation } = this.props;
+    
     return (
       <View style={{ flex:1, backgroundColor:'#000' }}>
         <Image style={{ flex:1, width:null }} resizeMode='contain' source={require('Pkmn/resources/battlefield/backgrounds/1.png')}/>
+        <HealthBar value={this.state.val}/>
+        <Button onPress={() => {this.setState(...this.state, {val: 5})}} title='+'/>
       </View>
     );
     // const {dailyMealData, dailyMealActions, navigation, theme,} = this.props;
