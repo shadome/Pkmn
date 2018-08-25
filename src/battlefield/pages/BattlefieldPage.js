@@ -2,8 +2,10 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { Image, NativeModules, StatusBar, View, ScrollView, Text, FlatList, Button } from 'react-native'
+import { ImageBackground, Image, NativeModules, StatusBar, View, ScrollView, Text, FlatList, Button } from 'react-native'
 import Orientation from 'react-native-orientation'
+
+import resolveAssetSource from 'resolveAssetSource'
 
 import HealthBar from '../components/HealthBar'
 import * as BattlefieldActions from '../actions/BattlefieldActions'
@@ -26,15 +28,38 @@ class BattlefieldPage extends Component {
     Orientation.unlockAllOrientations()
   }
   render() {
-    const { battlefieldData, navigation } = this.props;
-    
+    const { battlefieldData, navigation } = this.props
+    const p002 = require('Pkmn/resources/sprites/back/002.png')
+    const p003 = require('Pkmn/resources/sprites/back/003.png')
+    const p009 = require('Pkmn/resources/sprites/front/009.png')
+    const p008 = require('Pkmn/resources/sprites/front/008.png')
     return (
       <View style={{ flex:1, backgroundColor:'#000' }}>
-        <Image style={{ flex:1, width:null }} resizeMode='contain' source={require('Pkmn/resources/battlefield/backgrounds/1.png')}/>
-        <HealthBar value={this.state.val}/>
-        <Button onPress={() => {this.setState(...this.state, {val: 5})}} title='+'/>
+        <ImageBackground style={{ flex:1, width:null }} resizeMode='contain' source={require('Pkmn/resources/battlefield/backgrounds/1.png')}>
+          <View style={{flexDirection:'row'}}>
+          <View style={{flexDirection:'column'}}>
+          <HealthBar pkmn='002' value={this.state.val}/>
+          <View style={{height:30, borderColor:'#123456', borderWidth:4, width:200}}/>
+          <HealthBar pkmn='003' value={this.state.val}/>
+          <View style={{height:30, borderColor:'#123456', borderWidth:4, width:200}}/>
+          </View>
+          <View style={{flex:1}}/>
+          <Image source={p008} style={{width:144, height:144, borderColor:'#23456789', borderWidth:4}}/>
+          <Image source={p009} style={{width:144, height:144, borderColor:'#23456789', borderWidth:4, marginTop:10}}/>
+          <View style={{width:40}}/>
+          </View> 
+          {/* <View style={{ flex:1 }}/> */}
+          <View style={{flexDirection:'row'}}>
+            <View style={{width:40}}/>
+            <Image source={p003} style={{width:144, height:144, borderColor:'#23456789', borderWidth:4}}/>
+            <Image source={p002} style={{width:144, height:144, borderColor:'#23456789', borderWidth:4, marginTop:10}}/>
+          </View>
+          <View style={{height:100, width:600, flex:1, borderColor:'#23456789', borderWidth:4, position:'absolute', bottom:0, left:0}}>
+            <Button onPress={() => {this.setState(...this.state, {val: 5})}} title='+'/>
+          </View>
+        </ImageBackground>
       </View>
-    );
+    )
     // const {dailyMealData, dailyMealActions, navigation, theme,} = this.props;
     // const key = this.currentKey;
     // this.currentKey = DailyMealBusiness.getIdFromDate(new Date());
