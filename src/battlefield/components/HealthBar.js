@@ -3,63 +3,54 @@
 import React, { Component } from 'react'
 import { Image, StyleSheet, Text, View, Animated, Easing, } from 'react-native'
 
-var styles = StyleSheet.create({
-  background: {
-    backgroundColor: '#555555',
-    // height: 5,
-    overflow: 'hidden',
-    width: 200,
-  },
-  fill: {
-    backgroundColor: '#3b5998',
-    // height: 5
-  }
-})
-
 class ProgressBar extends Component {
   constructor(props) {
     super(props);
-    this.state = { progress: new Animated.Value(this.props.value || 50) }
+    this.state = { hp:this.props.hp, progress: new Animated.Value(this.props.hp >= 0 && this.props.hp <= 100 ? this.props.hp : 100) }
+    this.state.progress.addListener(({value}) => this.setState({ ...this.state, hp:value.toFixed(0)}))
   }
   componentWillReceiveProps(nextProps) {
-    if (nextProps.value >= 0 && this.props.value !== nextProps.value) {
+    if (nextProps.hp >= 0 && this.props.hp !== nextProps.hp) {
       Animated.timing(this.state.progress, {
         easing: Easing.inOut(Easing.ease),//this.props.easing,
         duration: 1000,//this.props.easingDuration,
-        toValue: nextProps.value
+        toValue: nextProps.hp
       }).start();
     }
   }
   render() {
+    const {selected} = this.props
+    const borderColour = '#555555'
+    const barWidth = 90
+    const selectedStyle = {borderColor:'#2299ff'}//, borderWidth:2, height:34}
     let fillWidth = this.state.progress.interpolate({
       inputRange: [0, 100],
-      outputRange: [0, (this.props.style && this.props.style.width) || styles.background.width],
+      outputRange: [0, barWidth],
     })
-    const width = 200
-    const height = 30
-    const borderlessHeight = 26
     return (
-      <View style={{flexDirection:'row' }}> 
-      {/*alignItems: 'center'*/}
-        <Image source={icons[this.props.pkmn]} style={{backgroundColor:'#888888',borderWidth:2, borderRadius:0, borderColor:'#444444'}}/>
-        {/* <View style={{flexDirection:'column'}}> */}
-          <View style={{ backgroundColor:'#888888', width:200, borderColor:'#555555', borderWidth:2}}>
-            <Animated.View style={{ backgroundColor:'#3b5998', width:fillWidth, height:26}}/>
-              {/* <View style={{borderColor:'#555555', borderWidth:2, flex:1, left:0, top:0, height:30, width:40, position:'absolute'}}/> */}
+      <View style={[this.props.style, {flexDirection:'row', height:34, borderWidth:2, borderColor:'transparent'}, selected && selectedStyle]}> 
+        <Image source={icons[this.props.id]} style={{backgroundColor:'#ffffffaa', borderRadius:0, borderWidth:2, borderColor:borderColour}}/>
+        <View style={{flexDirection:'column', width:barWidth+2, backgroundColor:'#888888', borderWidth:2, borderLeftWidth:0, borderColor:borderColour}}>
+          <View style={{flex:1}}>
+            <Animated.View style={{ backgroundColor:'#3b5998', width:fillWidth, flex:1}}/>
+            <View style={{height:'100%', width:'100%', position:'absolute', justifyContent:'center'}}>
+              <Text style={{textAlign:'center', color:'#ffffff', fontSize:10, fontWeight:'bold'}}>{this.state.hp}%</Text>
+            </View>
+          </View>
+          <View style={{flex:1, borderTopWidth:2, borderColor:borderColour}}>
+            <Animated.View style={{backgroundColor:'#559955', width:'80%', height:12}}/>
             <View style={{flexDirection:'row', left:0, top:0, position:'absolute'}}>
               <View style={{flex:1}}/>
-              <View style={{borderColor:'#555555', borderWidth:1, height:30}}/>
+              <View style={{borderColor:borderColour, borderWidth:1, height:14}}/>
               <View style={{flex:1}}/>
-              <View style={{borderColor:'#555555', borderWidth:1, height:30}}/>
+              <View style={{borderColor:borderColour, borderWidth:1, height:14}}/>
               <View style={{flex:1}}/>
-              <View style={{borderColor:'#555555', borderWidth:1, height:30}}/>
+              <View style={{borderColor:borderColour, borderWidth:1, height:14}}/>
               <View style={{flex:1}}/>
-              <View style={{borderColor:'#555555', borderWidth:1, height:30}}/>
+              <View style={{borderColor:borderColour, borderWidth:1, height:14}}/>
               <View style={{flex:1}}/>
             </View>
-          {/* </View> */}
-            {/* <Text>{this.props.value}%</Text> */}
-          {/* </Animated.View> */}
+          </View>
         </View>
       </View>
     )

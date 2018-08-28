@@ -8,18 +8,28 @@ import Orientation from 'react-native-orientation'
 import resolveAssetSource from 'resolveAssetSource'
 
 import HealthBar from '../components/HealthBar'
+import Monster from '../components/Monster'
 import * as BattlefieldActions from '../actions/BattlefieldActions'
-// import {COLOR, ThemeProvider, ListItem, Checkbox, Button, Toolbar, Icon, ActionButton, BottomNavigation, withTheme} from '../components/react-native-material-ui';
-// import * as DailyMealActions from '../actions/DailyMealActions';
-// import DailyMealBusiness from '../business/DailyMealBusiness';
-
-// import MainBottomNavigationBar from '../fragments/MainBottomNavigationBarFragment'
 
 class BattlefieldPage extends Component {
   constructor(props) {
     super(props);
-    // this.currentKey = DailyMealBusiness.getIdFromDate(new Date());
-    this.state = { val: 50}
+    this.state = {
+      ...this.state,
+      steelix: { 
+        id:'208', 
+        hp:100,
+        spriteFront:require('Pkmn/resources/sprites/front/208.png'), 
+        spriteBack:require('Pkmn/resources/sprites/back/208.png')
+      },
+      venusaur: { 
+        id:'003', 
+        hp:94,
+        spriteBack:require('Pkmn/resources/sprites/back/003.png')
+      },
+      blastoise: { id:'009', hp:0, spriteFront:require('Pkmn/resources/sprites/front/009.png')},
+      selected: 1
+    }    
   }
   componentDidMount() {
     Orientation.lockToLandscape()
@@ -29,33 +39,27 @@ class BattlefieldPage extends Component {
   }
   render() {
     const { battlefieldData, navigation } = this.props
-    const p002 = require('Pkmn/resources/sprites/back/002.png')
-    const p003 = require('Pkmn/resources/sprites/back/003.png')
-    const p009 = require('Pkmn/resources/sprites/front/009.png')
-    const p008 = require('Pkmn/resources/sprites/front/008.png')
+    const select = (index) => { this.setState({...this.state, selected:index})}
+    const inc = () => {
+      this.setState({...this.state, steelix: {...this.state.steelix, hp:this.state.steelix.hp / 2}})
+    }
     return (
+      /* TODO render images as text (characters via font) for text colors if possible, or duplicate the images with a black one */
       <View style={{ flex:1, backgroundColor:'#000' }}>
-        <ImageBackground style={{ flex:1, width:null }} resizeMode='contain' source={require('Pkmn/resources/battlefield/backgrounds/1.png')}>
-          <View style={{flexDirection:'row'}}>
-          <View style={{flexDirection:'column'}}>
-          <HealthBar pkmn='002' value={this.state.val}/>
-          <View style={{height:30, borderColor:'#123456', borderWidth:4, width:200}}/>
-          <HealthBar pkmn='003' value={this.state.val}/>
-          <View style={{height:30, borderColor:'#123456', borderWidth:4, width:200}}/>
+        <ImageBackground style={{ flex:1, height:'100%' }} resizeMode='contain' source={require('Pkmn/resources/battlefield/backgrounds/1.png')}>
+          <View style={{flex:1, marginHorizontal:40}}>
+            <View style={{flexDirection:'row', position:'absolute', top:20, right:0}}>
+              <Monster style={{top:-5, right:-10}} monster={this.state.steelix} selected={this.state.selected === 3} friendly={false} onPress={() => select(3)}/>
+              <Monster monster={this.state.blastoise} selected={this.state.selected === 4} friendly={false} onPress={() => select(4)}/>
+            </View>
+            <View style={{flexDirection:'row', position:'absolute', bottom:-20, left:0}}>
+              <Monster style={{bottom:5}} monster={this.state.steelix} selected={this.state.selected === 1} friendly={true} onPress={() => select(1)}/>
+              <Monster monster={this.state.venusaur} friendly={true} selected={this.state.selected === 2} onPress={() => select(2)}/>
+            </View>
           </View>
-          <View style={{flex:1}}/>
-          <Image source={p008} style={{width:144, height:144, borderColor:'#23456789', borderWidth:4}}/>
-          <Image source={p009} style={{width:144, height:144, borderColor:'#23456789', borderWidth:4, marginTop:10}}/>
-          <View style={{width:40}}/>
-          </View> 
-          {/* <View style={{ flex:1 }}/> */}
-          <View style={{flexDirection:'row'}}>
-            <View style={{width:40}}/>
-            <Image source={p003} style={{width:144, height:144, borderColor:'#23456789', borderWidth:4}}/>
-            <Image source={p002} style={{width:144, height:144, borderColor:'#23456789', borderWidth:4, marginTop:10}}/>
-          </View>
-          <View style={{height:100, width:600, flex:1, borderColor:'#23456789', borderWidth:4, position:'absolute', bottom:0, left:0}}>
-            <Button onPress={() => {this.setState(...this.state, {val: 5})}} title='+'/>
+          <View style={{height:100, marginHorizontal:40, borderColor:'#23456789', borderWidth:4}}>
+            <View style={{flex:1}}/>
+            <Button style={{height:'100%'}} onPress={inc} title='+'/>
           </View>
         </ImageBackground>
       </View>
