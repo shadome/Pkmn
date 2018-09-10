@@ -16,8 +16,8 @@ public class MainActivity extends ReactActivity {
         return "Pkmn";
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+     @Override
+     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         Intent intent = new Intent("onConfigurationChanged");
         intent.putExtra("newConfig", newConfig);

@@ -3,8 +3,11 @@
 import React, { Component } from 'react'
 import { Image, View, Text, TouchableWithoutFeedback } from 'react-native'
 
+import IMAGES from '../data/Monsters'
+
 import HealthBar from '../components/HealthBar'
 
+// TODO animated sprites when selected (black white gif)
 class Monster extends Component {
   constructor(props) {
     super(props);
@@ -17,10 +20,10 @@ class Monster extends Component {
     return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={[this.props.style, {flexDirection:'column', alignItems:'center'}]}>
-        <HealthBar id={monster.id} hp={monster.hp} selected={selected}/>
+        {/* <HealthBar monster={monster} selected={selected}/> */}
         {(selected && <Image source={seltop} style={{position:'absolute', bottom:5}}/>)}
         <Image style={{width:spriteEdgeSize, height:spriteEdgeSize}}
-          source={friendly ? monster.spriteBack : monster.spriteFront} 
+          source={friendly ? IMAGES[monster.id].spriteBack : IMAGES[monster.id].spriteFront} 
         /> 
         {(selected && <Image source={selbot} style={{position:'absolute', bottom:5}}/>)}
       </View>
