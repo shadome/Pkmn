@@ -21,7 +21,7 @@ class ProgressBar extends Component {
     }
   }
   render() {
-    const {monster, selected} = this.props
+    const {monster, selected, icon, text} = this.props
     const borderColour = '#000'
     const barWidth = 102
     const selectedStyle = {borderColor:'#2299ff'}//, borderWidth:2, height:34}
@@ -30,14 +30,26 @@ class ProgressBar extends Component {
       outputRange: [0, barWidth],
     })
     return (
-      <View style={[this.props.style, {flexDirection:'row', height:34, borderWidth:2, borderColor:'transparent'}, selected && selectedStyle]}> 
-        <Image source={IMAGES[monster.id].icon} style={{backgroundColor:'#ffffffaa', borderRadius:0, borderWidth:1, borderColor:borderColour}}/>
-        <View style={{flexDirection:'column', width:barWidth+2, backgroundColor:'#888888', borderWidth:1, borderLeftWidth:0, borderColor:borderColour}}>
+      <View style={[this.props.style, {flexDirection:'row', height:icon?34:20, borderWidth:2, borderColor:'transparent'}, ]}> 
+      {/*selected && selectedStyle*/}
+        {icon && <Image source={IMAGES[monster.id].icon} style={{backgroundColor:'#ffffffaa', borderRadius:0, borderWidth:1, borderRightWidth:0, borderColor:borderColour}}/>}
+        <View style={{width:barWidth+2, backgroundColor:'#888888', borderWidth:1, borderColor:borderColour}}>
           <View style={{flex:1}}>
-            <Animated.View style={{ backgroundColor:'#3b5998', width:fillWidth, flex:1}}/>
-            <View style={{height:'100%', width:'100%', position:'absolute', justifyContent:'center'}}>
-              <Text style={{textAlign:'center', color:'#ffffff', fontSize:10, fontWeight:'bold'}}>{this.state.value}%</Text>
-            </View>
+            <Animated.View style={{backgroundColor:'#3b5998', width:fillWidth, flex:1}}/>
+            {/* <View style={{height:'100%', width:'100%', position:'absolute', justifyContent:'center'}}>
+               <Text style={{textAlign:'center', color:'#ffffff', fontSize:10, fontWeight:'bold'}}>{this.state.value}%</Text>
+            </View> */}
+            {/* <View style={{flexDirection:'row', width:'100%', height:'100%', position:'absolute'}}>
+              <View style={{flex:1}}/>
+              <View style={{borderColor:borderColour, borderRightWidth:1}}/>
+              <View style={{flex:1}}/>
+              <View style={{borderColor:borderColour, borderRightWidth:1}}/>
+              <View style={{flex:1}}/>
+              <View style={{borderColor:borderColour, borderRightWidth:1}}/>
+              <View style={{flex:1}}/>
+              <View style={{borderColor:borderColour, borderRightWidth:1}}/>
+              <View style={{flex:1}}/>
+            </View> */}
           </View>
           {/* <View style={{flex:1, borderTopWidth:1, borderColor:borderColour}}>
             <Animated.View style={{backgroundColor:'#559955', width:'80%', height:15}}/>

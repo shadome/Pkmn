@@ -17,11 +17,11 @@ class BattlefieldPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      ...this.state,
-      p1: { id:'050', hp:0, },
-      p2: { id:'075', hp:94, },
-      e1: { id:'100', hp:99, },
-      e2: { id:'151', hp:76, },
+    //   ...this.state,
+    //   p1: { id:'050', hp:0, },
+    //   p2: { id:'149', hp:94, },
+    //   e1: { id:'100', hp:99, },
+    //   e2: { id:'151', hp:76, },
       selected: 0
     }    
   }
@@ -34,14 +34,14 @@ class BattlefieldPage extends Component {
   render() {
     const { battlefieldData, navigation } = this.props
     const select = (index) => { this.setState({...this.state, selected:index})}
-    const inc = () => {
-      this.setState({...this.state, 
-        e1: {...this.state.e1, hp: this.state.selected == 3 ? this.state.e1.hp / 2 : this.state.e1.hp},
-        e2: {...this.state.e2, hp: this.state.selected == 4 ? this.state.e2.hp / 2 : this.state.e2.hp},
-        p1: {...this.state.p1, hp: this.state.selected == 1 ? this.state.p1.hp / 2 : this.state.p1.hp},
-        p2: {...this.state.p2, hp: this.state.selected == 2 ? this.state.p2.hp / 2 : this.state.p2.hp},
-      })
-    }
+    // const inc = () => {
+    //   this.setState({...this.state, 
+    //     e1: {...this.state.e1, hp: this.state.selected == 3 ? this.state.e1.hp / 2 : this.state.e1.hp},
+    //     e2: {...this.state.e2, hp: this.state.selected == 4 ? this.state.e2.hp / 2 : this.state.e2.hp},
+    //     p1: {...this.state.p1, hp: this.state.selected == 1 ? this.state.p1.hp / 2 : this.state.p1.hp},
+    //     p2: {...this.state.p2, hp: this.state.selected == 2 ? this.state.p2.hp / 2 : this.state.p2.hp},
+    //   })
+    // }
     const clearSelection = () => {
       this.setState({...this.state, selected: 0})
     }
@@ -49,27 +49,37 @@ class BattlefieldPage extends Component {
       /* TODO render images as text (characters via font) for text colors if possible, or duplicate the images with a black one */
       <View style={{ flex:1, backgroundColor:'#000' }}>
         <ImageBackground style={{ flex:1, height:'100%' }} resizeMode='contain' source={require('Pkmn/resources/battlefield/backgrounds/1.png')}>
-          <View style={{position: 'absolute', left:0, top:0, flexDirection: 'column'}}>
-            <TeamMenuItem monster={this.state.p1}/>
-            <TeamMenuItem monster={this.state.p2}/>
+          <View style={{position:'absolute', left:0, top:0, flexDirection: 'column'}}>
+            <TeamMenuItem monster={battlefieldData.party[2]}/>
+            <TeamMenuItem monster={battlefieldData.party[3]}/>
+            <TeamMenuItem monster={battlefieldData.party[4]}/>
+            <TeamMenuItem monster={battlefieldData.party[5]}/>
+          </View>
+          <View style={{position:'absolute', right:0, top:0, flexDirection: 'column'}}>
+            <TeamMenuItem monster={battlefieldData.enemy[0]}/>
+            <TeamMenuItem monster={battlefieldData.enemy[1]}/>
+            <TeamMenuItem monster={battlefieldData.enemy[2]}/>
+            <TeamMenuItem monster={battlefieldData.enemy[3]}/>
+            <TeamMenuItem monster={battlefieldData.enemy[4]}/>
+            <TeamMenuItem monster={battlefieldData.enemy[5]}/>
           </View>
           <TouchableWithoutFeedback style={{flex:1}} onPress={clearSelection}>
             <View style={{flex:1, marginHorizontal:40}}>
-              <View style={{position:'absolute', right:0}}>
-                <HealthBar monster={this.state.e1} selected={this.state.selected == 3}/>
-                <HealthBar monster={this.state.e2} selected={this.state.selected == 4}/>
+              {/* <View style={{position:'absolute', right:0}}>
+                <HealthBar monster={battlefieldData.enemy[0]} selected={this.state.selected == 3}/>
+                <HealthBar monster={battlefieldData.enemy[1]} selected={this.state.selected == 4}/>
+              </View> */}
+              <View style={{flexDirection:'row', position:'absolute', bottom:80, right:0}}>
+                <Monster style={{justifyContent:'flex-end', bottom:50}} monster={battlefieldData.enemy[0]} selected={this.state.selected === 3} onPress={() => select(3)}/>
+                <Monster style={{justifyContent:'flex-end'}} monster={battlefieldData.enemy[1]} selected={this.state.selected === 4} onPress={() => select(4)}/>
               </View>
-              <View style={{flexDirection:'row', position:'absolute', top:80, right:0}}>
-                <Monster monster={this.state.e1} selected={this.state.selected === 3} onPress={() => select(3)}/>
-                <Monster style={{top:50}} monster={this.state.e2} selected={this.state.selected === 4} onPress={() => select(4)}/>
-              </View>
-              <View style={{position:'absolute', left:0}}>
-                <HealthBar monster={this.state.p1} selected={this.state.selected == 1}/>
-                <HealthBar monster={this.state.p2} selected={this.state.selected == 2}/>
-              </View>
+              {/* <View style={{position:'absolute', left:0}}>
+                <HealthBar monster={battlefieldData.party[0]} selected={this.state.selected == 1}/>
+                <HealthBar monster={battlefieldData.party[1]} selected={this.state.selected == 2}/>
+              </View> */}
               <View style={{flexDirection:'row', position:'absolute', bottom:10, left:0}}>
-                <Monster style={{bottom:50}} monster={this.state.p1} selected={this.state.selected === 1} friendly onPress={() => select(1)}/>
-                <Monster monster={this.state.p2} friendly selected={this.state.selected === 2} onPress={() => select(2)}/>
+                <Monster style={{justifyContent:'flex-end', bottom:50}} monster={battlefieldData.party[0]} selected={this.state.selected === 1} friendly onPress={() => select(1)}/>
+                <Monster style={{justifyContent:'flex-end'}} monster={battlefieldData.party[1]} friendly selected={this.state.selected === 2} onPress={() => select(2)}/>
               </View>
             </View>
           {/* <View style={{height:100, marginHorizontal:40, borderColor:'#23456789', borderWidth:4, alignItems:'center', flexDirection:'row', justifyContent:'center'}}>

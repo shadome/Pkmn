@@ -1,7 +1,7 @@
 'use strict'
 
 import React, { Component } from 'react'
-import { Image, View, Text, TouchableWithoutFeedback } from 'react-native'
+import {Image, View, Text, TouchableWithoutFeedback } from 'react-native'
 
 import IMAGES from '../data/Monsters'
 

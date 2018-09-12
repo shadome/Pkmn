@@ -20,8 +20,9 @@ class Monster extends Component {
     return (
     <TouchableWithoutFeedback onPress={onPress}>
       <View style={[this.props.style, {flexDirection:'column', alignItems:'center'}]}>
-        {/* <HealthBar monster={monster} selected={selected}/> */}
-        {(selected && <Image source={seltop} style={{position:'absolute', bottom:5}}/>)}
+        {selected && <HealthBar monster={monster} selected={selected}/>}
+        {selected && <View style={{height:10}}/>}
+        {selected && <Image source={seltop} style={{position:'absolute', bottom:5}}/>}
         <Image style={{width:spriteEdgeSize, height:spriteEdgeSize}}
           source={friendly ? IMAGES[monster.id].spriteBack : IMAGES[monster.id].spriteFront} 
         /> 
